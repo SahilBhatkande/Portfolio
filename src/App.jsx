@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ const HeroBackground = () => (
 const NavLink = ({ href, children }) => (
   <motion.a
     href={href}
-    className="text-[#8F9BB7] hover:text-[#00F0FF] relative group px-4 py-2"
+    className="text-[#8F9BB7] hover:text-[#00F0FF] relative group px-4 py-2 text-sm md:text-base"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
@@ -48,7 +48,7 @@ const Section = ({ id, children, className }) => {
     <motion.section
       ref={ref}
       id={id}
-      className={`flex items-center justify-center py-20 px-4 ${className}`}
+      className={`flex items-center justify-center py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 ${className}`}
       initial="hidden"
       animate={controls}
       variants={{
@@ -56,7 +56,7 @@ const Section = ({ id, children, className }) => {
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
       }}
     >
-      <div className="bg-gray-850 rounded-3xl shadow-2xl max-w-6xl w-full p-8 md:p-12">
+      <div className="bg-gray-850 rounded-3xl shadow-2xl max-w-7xl w-full p-6 sm:p-8 md:p-12">
         {children}
       </div>
     </motion.section>
@@ -75,27 +75,28 @@ const ProjectCard = ({ title, description, link, image, tags }) => {
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
     >
-      <div className="relative h-56 overflow-hidden">
+      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-[#00F0FF]/20 to-[#7000FF]/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
         <motion.img 
           src={image} 
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center"
           animate={{
             scale: isHovered ? 1.1 : 1
           }}
           transition={{ duration: 0.5 }}
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1A1C23] via-[#1A1C23]/50 to-transparent" />
       </div>
-      <div className="p-6 relative">
+      <div className="p-4 sm:p-6 relative">
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="px-3 py-1 text-xs font-medium rounded-full"
+              className="px-2 sm:px-3 py-1 text-xs font-medium rounded-full"
               style={{
                 background: `linear-gradient(135deg, ${index % 2 === 0 ? '#00F0FF20' : '#7000FF20'}, transparent)`,
                 color: index % 2 === 0 ? '#00F0FF' : '#7000FF',
@@ -106,8 +107,8 @@ const ProjectCard = ({ title, description, link, image, tags }) => {
             </span>
           ))}
         </div>
-        <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-[#00F0FF] transition-colors">{title}</h3>
-        <p className="text-[#8F9BB7] mb-6 text-sm leading-relaxed">{description}</p>
+        <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 group-hover:text-[#00F0FF] transition-colors">{title}</h3>
+        <p className="text-[#8F9BB7] mb-6 text-sm sm:text-base leading-relaxed">{description}</p>
         <motion.a
           href={link}
           target="_blank"
@@ -128,7 +129,7 @@ const ProjectCard = ({ title, description, link, image, tags }) => {
 
 const ExperienceCard = ({ company, role, duration, description }) => (
   <motion.div
-    className="bg-white/80 p-8 rounded-sm shadow-lg border border-[#8b7355]/10"
+    className="bg-white/80 p-6 sm:p-8 rounded-sm shadow-lg border border-[#8b7355]/10"
     initial={{ opacity: 0, x: -20 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
@@ -138,35 +139,35 @@ const ExperienceCard = ({ company, role, duration, description }) => (
     }}
     transition={{ duration: 0.4 }}
   >
-    <h3 className="text-xl font-semibold text-gray-900 mb-2">{role}</h3>
+    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{role}</h3>
     <p className="text-[#8b7355] font-medium mb-1">{company}</p>
     <p className="text-gray-500 text-sm mb-3">{duration}</p>
-    <p className="text-gray-600 text-base leading-relaxed">{description}</p>
+    <p className="text-gray-600 text-sm sm:text-base leading-relaxed">{description}</p>
   </motion.div>
 );
 
 const SkillCategory = ({ title, skills }) => (
   <motion.div
-    className="bg-gray-800 p-6 rounded-2xl shadow-lg"
+    className="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
   >
-    <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
-    <p className="text-gray-300 text-base">{skills.join(', ')}</p>
+    <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">{title}</h3>
+    <p className="text-gray-300 text-sm sm:text-base">{skills.join(', ')}</p>
   </motion.div>
 );
 
 const EducationCard = ({ degree, institution, duration }) => (
   <motion.div
-    className="bg-gray-800 p-6 rounded-2xl shadow-lg"
+    className="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg"
     initial={{ opacity: 0, x: -30 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
   >
-    <h3 className="text-xl font-semibold text-white mb-2">{degree}</h3>
+    <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{degree}</h3>
     <p className="text-teal-300 font-medium mb-1">{institution}</p>
     <p className="text-gray-400 text-sm">{duration}</p>
   </motion.div>
@@ -176,11 +177,7 @@ const App = () => {
   const controls = useAnimation();
   const [navRef, navInView] = useInView({ threshold: 0.1 });
   const { register, handleSubmit, reset } = useForm();
-
-  useEffect(() => {
-    // Initialize EmailJS
-    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!navInView) {
@@ -191,7 +188,6 @@ const App = () => {
   }, [controls, navInView]);
 
   const onSubmit = async (data) => {
-    // Show loading state
     const button = document.querySelector('button[type="submit"]');
     const originalText = button.innerHTML;
     button.innerHTML = 'Sending...';
@@ -202,7 +198,7 @@ const App = () => {
         from_name: data.name,
         from_email: data.email,
         message: data.message,
-        to_name: 'Sahil', // Add your name here
+        to_name: 'Sahil',
         reply_to: data.email,
       };
 
@@ -216,47 +212,71 @@ const App = () => {
       reset();
     } catch (error) {
       console.error('Error sending email:', error);
-      alert('Failed to send message. Please try again or contact me directly at your-email@example.com');
+      alert('Failed to send message. Please try again or contact me directly at sahilb2604@gmail.com');
     } finally {
-      // Reset button state
       button.innerHTML = originalText;
       button.disabled = false;
     }
   };
+
+  const techStack = [
+    'React', 'Node.js', 'Web3', 'Solidity', 'TypeScript', 'AWS', 'MongoDB', 'PostgreSQL', 'Redis', 
+    'JWT', 'Hardhat', 'IPFS', 'Next.js', 'Express.js', 'Docker', 'Kubernetes'
+  ];
 
   return (
     <div className="bg-[#0A0B0D] text-white font-sans min-h-screen">
       {/* Navbar */}
       <motion.nav
         ref={navRef}
-        className="fixed top-0 left-0 w-full z-50 py-6"
+        className="fixed top-0 left-0 w-full z-50 py-4 sm:py-6 bg-[#0A0B0D]/80 backdrop-blur-md"
         animate={controls}
         transition={{ duration: 0.3 }}
       >
-        <div className="container mx-auto flex justify-between items-center px-6">
+        <div className="container mx-auto flex justify-between items-center px-4 sm:px-6">
           <motion.h1
-            className="text-3xl font-bold bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent"
+            className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
             SB
           </motion.h1>
-          <ul className="flex space-x-8">
+          <ul className="hidden md:flex space-x-4 md:space-x-8">
             <li><NavLink href="#home">Home</NavLink></li>
             <li><NavLink href="#about">About</NavLink></li>
             <li><NavLink href="#experience">Experience</NavLink></li>
             <li><NavLink href="#projects">Projects</NavLink></li>
             <li><NavLink href="#contact">Contact</NavLink></li>
           </ul>
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 focus:outline-none"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bg-[#00F0FF] mb-1 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-[#00F0FF] mb-1 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-[#00F0FF] transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+          </button>
         </div>
+        {menuOpen && (
+          <div className="md:hidden bg-[#13141A] border-t border-[#00F0FF]/10 px-4 py-4">
+            <ul className="flex flex-col space-y-4">
+              <li><a href="#home" className="block text-[#8F9BB7] hover:text-[#00F0FF] text-base" onClick={() => setMenuOpen(false)}>Home</a></li>
+              <li><a href="#about" className="block text-[#8F9BB7] hover:text-[#00F0FF] text-base" onClick={() => setMenuOpen(false)}>About</a></li>
+              <li><a href="#experience" className="block text-[#8F9BB7] hover:text-[#00F0FF] text-base" onClick={() => setMenuOpen(false)}>Experience</a></li>
+              <li><a href="#projects" className="block text-[#8F9BB7] hover:text-[#00F0FF] text-base" onClick={() => setMenuOpen(false)}>Projects</a></li>
+              <li><a href="#contact" className="block text-[#8F9BB7] hover:text-[#00F0FF] text-base" onClick={() => setMenuOpen(false)}>Contact</a></li>
+            </ul>
+          </div>
+        )}
       </motion.nav>
 
       {/* Hero Section */}
-      <Section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#13141A] via-[#20232A] to-[#2C3E50]">
+      <Section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-[#13141A] via-[#20232A] to-[#2C3E50] px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-32">
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
         <HeroBackground />
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -264,7 +284,7 @@ const App = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.span 
-              className="text-lg md:text-xl text-[#00F0FF] font-medium mb-4 block"
+              className="text-base sm:text-lg md:text-xl text-[#00F0FF] font-medium mb-4 block"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.8 }}
@@ -272,30 +292,30 @@ const App = () => {
               Hello, I'm Sahil 👋
             </motion.span>
             <motion.h1 
-              className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF3DFF] bg-clip-text text-transparent leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF3DFF] bg-clip-text text-transparent leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Crafting Digital Experiences Through Code
+              Software Engineer
             </motion.h1>
             <motion.p 
-              className="text-xl md:text-2xl text-[#8F9BB7] mb-12 leading-relaxed max-w-3xl mx-auto"
+              className="text-base sm:text-lg md:text-xl text-[#8F9BB7] mb-12 leading-relaxed max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Full Stack Developer specializing in Web3 technologies and modern web applications. Building the future of decentralized web, one project at a time.
+              Full Stack Developer specializing in scalable backend systems, cloud infrastructure, and modern web applications. Building robust and efficient solutions for the future.
             </motion.p>
             <motion.div
-              className="flex items-center justify-center gap-6"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
               <motion.a
                 href="#projects"
-                className="neon-border inline-flex items-center px-8 py-3 text-white bg-gradient-to-r from-[#00F0FF] to-[#7000FF] rounded-lg hover:shadow-lg transition-all duration-300"
+                className="neon-border inline-flex items-center px-6 sm:px-8 py-3 text-white bg-gradient-to-r from-[#00F0FF] to-[#7000FF] rounded-lg hover:shadow-lg transition-all duration-300 text-sm sm:text-base"
                 whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(0, 240, 255, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -307,7 +327,7 @@ const App = () => {
               <motion.a
                 href="/your-cv.pdf"
                 download="Sahil_Bhatkande_CV.pdf"
-                className="inline-flex items-center px-8 py-3 text-white border border-[#00F0FF] rounded-lg hover:bg-[#00F0FF]/10 transition-all duration-300"
+                className="inline-flex items-center px-6 sm:px-8 py-3 text-white border border-[#00F0FF] rounded-lg hover:bg-[#00F0FF]/10 transition-all duration-300 text-sm sm:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -319,7 +339,7 @@ const App = () => {
             </motion.div>
           </motion.div>
         </div>
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-8 sm:bottom-10 left-1/2 transform -translate-x-1/2">
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -334,10 +354,10 @@ const App = () => {
       </Section>
 
       {/* About Section */}
-      <Section id="about" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg">
+      <Section id="about" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-32">
         <div className="text-center">
           <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
@@ -345,62 +365,62 @@ const App = () => {
             About Me
           </motion.h2>
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-start max-w-6xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <div className="text-left">
-              <motion.p className="text-lg text-[#8F9BB7] leading-relaxed mb-6">
-                Blockchain enthusiast and full-stack developer with a passion for creating innovative solutions in the Web3 space. I specialize in building decentralized applications that bridge the gap between traditional web and blockchain technology.
+              <motion.p className="text-base sm:text-lg text-[#8F9BB7] leading-relaxed mb-6">
+                Full-stack developer with a passion for building scalable backend systems and cloud-native applications. I specialize in leveraging AWS, modern JavaScript frameworks, and containerization to create robust solutions.
               </motion.p>
-              <motion.p className="text-lg text-[#8F9BB7] leading-relaxed mb-6">
-                Currently pursuing B.E. in Computer Science, I combine academic knowledge with practical experience in modern web development frameworks and blockchain technologies.
+              <motion.p className="text-base sm:text-lg text-[#8F9BB7] leading-relaxed mb-6">
+                Currently pursuing B.E. in Computer Science, I combine academic knowledge with hands-on experience in developing high-performance web applications and tackling complex scalability challenges.
               </motion.p>
-              <div className="flex flex-wrap gap-4 mt-8">
-                {['React', 'Node.js', 'Web3', 'Solidity', 'TypeScript', 'AWS'].map((tech) => (
-                  <span key={tech} className="px-4 py-2 bg-[#00F0FF]/10 text-[#00F0FF] rounded-lg border border-[#00F0FF]/20">
+              <div className="flex flex-wrap gap-2 sm:gap-4 mt-8">
+                {techStack.map((tech) => (
+                  <span key={tech} className="px-3 sm:px-4 py-1 sm:py-2 bg-[#00F0FF]/10 text-[#00F0FF] rounded-lg border border-[#00F0FF]/20 text-xs sm:text-sm">
                     {tech}
                   </span>
                 ))}
               </div>
             </div>
-            <div className="space-y-8">
-              <div className="bg-[#1A1C23] p-6 rounded-lg border border-[#2A2D36]">
-                <h3 className="text-xl font-semibold text-white mb-4">Education</h3>
+            <div className="space-y-6 sm:space-y-8">
+              <div className="bg-[#1A1C23] p-4 sm:p-6 rounded-lg border border-[#2A2D36]">
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Education</h3>
                 <div className="space-y-4">
                   <div>
                     <h4 className="text-[#00F0FF] font-medium">B.E. in Computer Science</h4>
-                    <p className="text-[#8F9BB7]">Dr. D Y Patil Institute of Technology, Pune</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Dr. D Y Patil Institute of Technology, Pune</p>
                     <p className="text-sm text-[#8F9BB7]/70">2023 - 2026</p>
                   </div>
                   <div>
                     <h4 className="text-[#00F0FF] font-medium">Diploma in Computer Engineering</h4>
-                    <p className="text-[#8F9BB7]">Dr. Bapuji Salunkhe Institute of Technology</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Dr. Bapuji Salunkhe Institute of Technology</p>
                     <p className="text-sm text-[#8F9BB7]/70">2020 - 2023</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-[#1A1C23] p-6 rounded-lg border border-[#2A2D36]">
-                <h3 className="text-xl font-semibold text-white mb-4">Current Focus</h3>
+              <div className="bg-[#1A1C23] p-4 sm:p-6 rounded-lg border border-[#2A2D36]">
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Current Focus</h3>
                 <ul className="space-y-2 text-[#8F9BB7]">
                   <li className="flex items-center">
                     <svg className="w-5 h-5 mr-2 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Exploring Web3 Technologies
+                    AWS Cloud Infrastructure
                   </li>
                   <li className="flex items-center">
                     <svg className="w-5 h-5 mr-2 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Building DeFi Applications
+                    Backend Development
                   </li>
                   <li className="flex items-center">
                     <svg className="w-5 h-5 mr-2 text-[#00F0FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Smart Contract Development
+                    Scalable Problem Solving
                   </li>
                 </ul>
               </div>
@@ -410,25 +430,25 @@ const App = () => {
       </Section>
 
       {/* Experience Section */}
-      <Section id="experience" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg">
+      <Section id="experience" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-32">
         <div className="text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
             Experience
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
             <motion.div
               className="group"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="bg-[#1A1C23] p-8 rounded-2xl border border-[#2A2D36] hover:border-[#00F0FF]/50 transition-all duration-300 h-full transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#00F0FF]/10">
-                <div className="flex items-center justify-between mb-6">
+              <div className="bg-[#1A1C23] p-6 sm:p-8 rounded-2xl border border-[#2A2D36] hover:border-[#00F0FF]/50 transition-all duration-300 h-full transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#00F0FF]/10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Software Developer Intern</h3>
-                    <h4 className="text-[#00F0FF] font-medium">DNG Technology</h4>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 ">Software Developer Intern</h3>
+                    <h4 className="text-[#00F0FF] font-medium text-left mb-2">DNG Technology</h4>
                   </div>
-                  <span className="px-4 py-2 bg-[#00F0FF]/10 text-[#00F0FF] rounded-lg text-sm">
+                  <span className="px-3 sm:px-4 py-1 sm:py-2 bg-[#00F0FF]/10 text-[#00F0FF] rounded-lg text-xs sm:text-sm">
                     June 2024 - Sept 2024
                   </span>
                 </div>
@@ -439,7 +459,7 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Developed responsive web applications using React and Node.js for a freelancer platform, implementing modern UI/UX principles.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Developed responsive web applications using React and Node.js for a freelancer platform, implementing modern UI/UX principles.</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#00F0FF] to-[#7000FF] flex items-center justify-center flex-shrink-0 mt-1">
@@ -447,7 +467,7 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Implemented JWT-based authentication system and integrated MongoDB for efficient data management.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Implemented JWT-based authentication system and integrated MongoDB for efficient data management.</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#00F0FF] to-[#7000FF] flex items-center justify-center flex-shrink-0 mt-1">
@@ -455,14 +475,14 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Optimized application performance resulting in 20% improvement in page load speed and enhanced user experience.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Optimized application performance resulting in 20% improvement in page load speed and enhanced user experience.</p>
                   </div>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {['React', 'Node.js', 'MongoDB', 'JWT'].map((tech, index) => (
+                  {['React', 'Node.js', 'MongoDB', 'JWT', 'AWS'].map((tech, index) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 text-xs font-medium rounded-full"
+                      className="px-2 sm:px-3 py-1 text-xs font-medium rounded-full"
                       style={{
                         background: `linear-gradient(135deg, ${index % 2 === 0 ? '#00F0FF10' : '#7000FF10'}, transparent)`,
                         color: index % 2 === 0 ? '#00F0FF' : '#7000FF',
@@ -482,13 +502,13 @@ const App = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="bg-[#1A1C23] p-8 rounded-2xl border border-[#2A2D36] hover:border-[#7000FF]/50 transition-all duration-300 h-full transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#7000FF]/10">
-                <div className="flex items-center justify-between mb-6">
+              <div className="bg-[#1A1C23] p-6 sm:p-8 rounded-2xl border border-[#2A2D36] hover:border-[#7000FF]/50 transition-all duration-300 h-full transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#7000FF]/10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Software Developer Intern</h3>
-                    <h4 className="text-[#7000FF] font-medium">Dehix</h4>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Software Developer Intern</h3>
+                    <h4 className="text-[#7000FF] font-medium text-left mb-2">Dehix</h4>
                   </div>
-                  <span className="px-4 py-2 bg-[#7000FF]/10 text-[#7000FF] rounded-lg text-sm">
+                  <span className="px-3 sm:px-4 py-1 sm:py-2 bg-[#7000FF]/10 text-[#7000FF] rounded-lg text-xs sm:text-sm">
                     Jan 2024 - Apr 2024
                   </span>
                 </div>
@@ -499,7 +519,7 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Built a full-stack job portal using React and Node.js, featuring real-time updates and advanced search functionality.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Built a full-stack job portal using Next.js and Express.js, featuring real-time updates and advanced search functionality.</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#7000FF] to-[#00F0FF] flex items-center justify-center flex-shrink-0 mt-1">
@@ -507,7 +527,7 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Enhanced API performance through query optimization and implemented caching strategies.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Enhanced API performance through query optimization and implemented Redis caching strategies.</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#7000FF] to-[#00F0FF] flex items-center justify-center flex-shrink-0 mt-1">
@@ -515,14 +535,14 @@ const App = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <p className="text-[#8F9BB7]">Collaborated with UI/UX team to implement responsive designs and improve user engagement metrics.</p>
+                    <p className="text-[#8F9BB7] text-sm sm:text-base">Deployed application on AWS ECS with Docker, improving scalability and reliability.</p>
                   </div>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {['React', 'Node.js', 'PostgreSQL', 'Redis'].map((tech, index) => (
+                  {['Next.js', 'Express.js', 'PostgreSQL', 'Redis', 'AWS', 'Docker'].map((tech, index) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 text-xs font-medium rounded-full"
+                      className="px-2 sm:px-3 py-1 text-xs font-medium rounded-full"
                       style={{
                         background: `linear-gradient(135deg, ${index % 2 === 0 ? '#7000FF10' : '#00F0FF10'}, transparent)`,
                         color: index % 2 === 0 ? '#7000FF' : '#00F0FF',
@@ -540,47 +560,47 @@ const App = () => {
       </Section>
 
       {/* Projects Section */}
-      <Section id="projects" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg">
+      <Section id="projects" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-32">
         <div className="text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
             Featured Projects
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
             <ProjectCard
-              title="DeFi Dashboard"
-              description="A comprehensive dashboard for tracking cryptocurrency portfolios, DeFi protocols, and market analytics. Built with React, Web3.js, and real-time data integration."
+              title="AI Mock Interviewer"
+              description="An AI-powered platform for conducting mock interviews, providing real-time feedback and performance analytics. Built with React, Node.js, and integrated with AWS for scalable backend services."
               link="https://ai-mockup-inter.web.app/"
               image="projects/defi-dashboard.png"
-              tags={['React', 'Web3.js', 'DeFi']}
+              tags={['React', 'Node.js', 'AWS', 'AI', 'TypeScript']}
             />
             <ProjectCard
-              title="NFT Marketplace"
-              description="A decentralized marketplace for trading digital collectibles with features like minting, bidding, and collection management. Powered by Ethereum smart contracts."
-              link="https://github.com/SahilBhatkande/Bookstore"
+              title="Expensify"
+              description="A full-stack expense tracking application with real-time reporting and budget management. Deployed on AWS with Docker containers for scalability."
+              link="https://personal-finance-tracker-13az.vercel.app/"
               image="projects/nft-marketplace.png"
-              tags={['Solidity', 'IPFS', 'NFT']}
+              tags={['Next.js', 'Express.js', 'MongoDB', 'AWS', 'Docker']}
             />
             <ProjectCard
-              title="Smart Contract Platform"
-              description="An intuitive platform for deploying and managing smart contracts with automated testing and security analysis features. Built with Solidity and Hardhat."
+              title="Job Portal"
+              description="A scalable job portal with advanced search, real-time notifications, and secure authentication. Built with Next.js and deployed on AWS with Kubernetes."
               link="https://job-portal-sb.vercel.app/"
               image="projects/smart-contracts.png"
-              tags={['Hardhat', 'Solidity', 'Testing']}
+              tags={['Next.js', 'PostgreSQL', 'Kubernetes', 'AWS', 'Redis']}
             />
           </div>
         </div>
       </Section>
 
       {/* Contact Section */}
-      <Section id="contact" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg">
+      <Section id="contact" className="glass-card bg-gradient-to-br from-[#13141A]/95 via-[#20232A]/95 to-[#2C3E50]/95 backdrop-blur-lg px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-32">
         <div className="text-center max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] bg-clip-text text-transparent inline-block">
             Let's Connect
           </h2>
-          <p className="text-[#8F9BB7] text-lg mb-12">
+          <p className="text-[#8F9BB7] text-base sm:text-lg mb-12">
             Have a project in mind or want to collaborate? Feel free to reach out!
           </p>
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-start">
             <motion.form 
               onSubmit={handleSubmit(onSubmit)} 
               className="space-y-6"
@@ -593,7 +613,7 @@ const App = () => {
                   type="text"
                   placeholder="Your Name"
                   {...register('name', { required: true })}
-                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors"
+                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors text-sm sm:text-base"
                 />
               </div>
               <div className="relative">
@@ -601,19 +621,19 @@ const App = () => {
                   type="email"
                   placeholder="Your Email"
                   {...register('email', { required: true })}
-                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors"
+                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors text-sm sm:text-base"
                 />
               </div>
               <div className="relative">
                 <textarea
                   placeholder="Your Message"
                   {...register('message', { required: true })}
-                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors h-32 resize-none"
+                  className="w-full p-4 bg-[#1A1C23] text-white rounded-lg border border-[#2A2D36] focus:border-[#00F0FF] focus:outline-none transition-colors h-32 resize-none text-sm sm:text-base"
                 />
               </div>
               <motion.button
                 type="submit"
-                className="w-full px-8 py-4 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300"
+                className="w-full px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#00F0FF] to-[#7000FF] text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 text-sm sm:text-base"
                 whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(0, 240, 255, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -621,30 +641,30 @@ const App = () => {
               </motion.button>
             </motion.form>
             <motion.div
-              className="text-left space-y-8"
+              className="text-left space-y-6 sm:space-y-8"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
               <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Contact Information</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Contact Information</h3>
                 <div className="space-y-4">
-                  <a href="mailto:your.email@example.com" className="flex items-center text-[#8F9BB7] hover:text-[#00F0FF] transition-colors">
+                  <a href="mailto:sahilb2604@gmail.com" className="flex items-center text-[#8F9BB7] hover:text-[#00F0FF] transition-colors text-sm sm:text-base">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    your.email@example.com
+                    sahilb2604@gmail.com
                   </a>
-                  <a href="https://www.linkedin.com/in/sahil-bhatkande/" className="flex items-center text-[#8F9BB7] hover:text-[#00F0FF] transition-colors">
+                  <a href="https://www.linkedin.com/in/sahil-bhatkande/" className="flex items-center text-[#8F9BB7] hover:text-[#00F0FF] transition-colors text-sm sm:text-base">
                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    LinkedIn Profile
+                    LinkedIn
                   </a>
                 </div>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-white mb-4">Follow Me</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-4">Follow Me</h3>
                 <div className="flex space-x-4">
                   <motion.a
                     href="https://github.com/SahilBhatkande"
@@ -690,7 +710,7 @@ const App = () => {
       </Section>
 
       {/* Footer */}
-      <footer className="py-10 mt-20 bg-[#13141A]">
+      <footer className="py-8 sm:py-10 mt-16 sm:mt-20 bg-[#13141A]">
         <div className="container mx-auto text-center">
           <p className="text-sm text-[#8F9BB7]">© 2025 Sahil Bhatkande. All rights reserved.</p>
         </div>
